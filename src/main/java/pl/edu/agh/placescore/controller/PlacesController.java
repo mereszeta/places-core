@@ -12,7 +12,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/api/v1/places")
-@CrossOrigin(origins = {"https://leskiw77.github.io"}, allowCredentials = "true")
+@CrossOrigin(origins = "*", allowCredentials = "true")
 public class PlacesController {
     private PlacesService placesService;
 
@@ -39,6 +39,11 @@ public class PlacesController {
     @GetMapping(params = {"!lat", "!lng", "!name"})
     public ResponseEntity<PlacesDTO> getPlaces() {
         return ResponseEntity.ok(this.placesService.getAllPlaces());
+    }
+
+    @GetMapping(params = {"lat", "lng", "name"})
+    public ResponseEntity<PlacesDTO> getPlacesByNameLatAndLng(@RequestParam String name, @RequestParam Long lat, @RequestParam Long lng) {
+        return ResponseEntity.ok(this.placesService.getPlacesByLatLngAndName(lat, lng, name));
     }
 
     @PostMapping(path = "/{id}/reviews")

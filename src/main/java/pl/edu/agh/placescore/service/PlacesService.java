@@ -59,6 +59,14 @@ public class PlacesService {
                     toList()));
     }
 
+    public PlacesDTO getPlacesByLatLngAndName(Long lat, Long lng, String name){
+        return new PlacesDTO(
+                this.placesRepository.findAllByGeoAndName(new Geo(lat, lng),name).stream()
+                        .map(entity -> this.placeConverter.fromEntity(entity))
+                        .collect(
+                                toList()));
+    }
+
     public void addReviewToPlace(String id, ReviewDTO review) throws NoSuchPlaceException {
         Optional<PlaceEntity> placeEntityOptional = this.placesRepository.findById(id);
         PlaceEntity placeEntity = placeEntityOptional.orElseThrow(() -> new NoSuchPlaceException(id));

@@ -9,6 +9,6 @@ import pl.edu.agh.placescore.model.entity.PlaceEntity;
 @Repository
 public interface PlacesRepository extends MongoRepository<PlaceEntity, String> {
     Collection<PlaceEntity> findAllByGeo(Geo geo);
-
     Collection<PlaceEntity> findAllByName(String name);
+    Collection<PlaceEntity> findAllByGeoAndName(Geo geo, String name);
 }

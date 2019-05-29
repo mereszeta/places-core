@@ -12,7 +12,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/api/v1/places")
-@CrossOrigin(origins = "*", allowCredentials = "true")
+@CrossOrigin(origins = "*", allowCredentials = "true", methods = {RequestMethod.GET, RequestMethod.OPTIONS, RequestMethod.POST})
 public class PlacesController {
     private PlacesService placesService;
 

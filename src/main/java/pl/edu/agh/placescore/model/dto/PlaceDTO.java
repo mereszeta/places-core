@@ -4,7 +4,6 @@ import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import pl.edu.agh.placescore.model.common.Address;
 import pl.edu.agh.placescore.model.common.Geo;
 import pl.edu.agh.placescore.model.common.Photo;
 
@@ -15,7 +14,7 @@ public class PlaceDTO {
     private final String name;
     private final String category;
     @Setter
-    private Address address;
+    private String address;
     private final Geo geo;
     private final String phone;
     private final String description;

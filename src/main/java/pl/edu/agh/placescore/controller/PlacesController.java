@@ -32,7 +32,7 @@ public class PlacesController {
     }
 
     @GetMapping(params = {"!name"})
-    public ResponseEntity<PlacesDTO> getPlacesByLatAndLng(@RequestParam Long lat, @RequestParam Long lng) {
+    public ResponseEntity<PlacesDTO> getPlacesByLatAndLng(@RequestParam Double lat, @RequestParam Double lng) {
         return ResponseEntity.ok(this.placesService.getPlacesByLatAndLng(lat, lng));
     }
 
@@ -42,7 +42,7 @@ public class PlacesController {
     }
 
     @GetMapping(params = {"lat", "lng", "name"})
-    public ResponseEntity<PlacesDTO> getPlacesByNameLatAndLng(@RequestParam String name, @RequestParam Long lat, @RequestParam Long lng) {
+    public ResponseEntity<PlacesDTO> getPlacesByNameLatAndLng(@RequestParam String name, @RequestParam Double lat, @RequestParam Double lng) {
         return ResponseEntity.ok(this.placesService.getPlacesByLatLngAndName(lat, lng, name));
     }
 

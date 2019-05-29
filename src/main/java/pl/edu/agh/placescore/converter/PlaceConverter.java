@@ -19,14 +19,14 @@ public class PlaceConverter implements BaseConverter<PlaceEntity, PlaceDTO> {
 
     @Override
     public PlaceEntity fromDTO(PlaceDTO dto) {
-        return null;
+        return new PlaceEntity(dto.getName(), dto.getCategory(), dto.getGeo(), dto.getPhone(), dto.getDescription());
     }
 
     @Override
     public PlaceDTO fromEntity(PlaceEntity entity) {
         return new PlaceDTO(entity.getId(), entity.getName(), entity.getCategory(), entity.getGeo(), entity.getPhone(),
-            entity.getDescription(),
-            entity.getReviews().stream().map(reviewEntity -> this.reviewConverter.fromEntity(reviewEntity))
-                .collect(toList()));
+                entity.getDescription(),
+                entity.getReviews().stream().map(reviewEntity -> this.reviewConverter.fromEntity(reviewEntity))
+                        .collect(toList()));
     }
 }

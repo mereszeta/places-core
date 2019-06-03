@@ -16,5 +16,5 @@ public interface PlacesRepository extends MongoRepository<PlaceEntity, String> {
 
     Collection<PlaceEntity> findAllByAndPositionNear(Point position, Distance distance);
 
-    Optional<PlaceEntity> findFirstByNameAndPosition(String name, Point position);
+    Optional<PlaceEntity> findFirstByNameAndPositionNear(String name, Point position,Distance distance);
 }

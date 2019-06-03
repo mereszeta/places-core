@@ -73,7 +73,8 @@ public class PlacesService {
     }
 
     private PlaceDTO getPlaceDTO(PlaceDTO placeDto) {
-        Optional<PlaceEntity> placeEntityOptional = this.placesRepository.findFirstByNameAndPosition(placeDto.getName(), new Point(placeDto.getGeo().getLat(), placeDto.getGeo().getLng()));
+        Optional<PlaceEntity> placeEntityOptional = this.placesRepository.findFirstByNameAndPositionNear(placeDto.getName(),
+                new Point(placeDto.getGeo().getLat(), placeDto.getGeo().getLng()), new Distance(1, Metrics.KILOMETERS));
         PlaceDTO newPlaceDTO = placeEntityOptional.isPresent() ?
                 this.placeConverter.fromEntity(placeEntityOptional.get()) :
                 this.placeConverter.fromEntity(this.placesRepository.save(this.placeConverter.fromDTO(placeDto)));

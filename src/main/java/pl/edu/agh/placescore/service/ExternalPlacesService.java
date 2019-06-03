@@ -24,4 +24,10 @@ public class ExternalPlacesService {
                 null, new ParameterizedTypeReference<List<PlaceDTO>>() {
                 }, name, lat, lng).getBody();
     }
+
+    public List<PlaceDTO> getPlacesByLatAndLng(Double lat, double lng) {
+        return restTemplate.exchange("https://places-external.herokuapp.com/v1/places?query=&lat={lat}&lng={lng}", HttpMethod.GET,
+                null, new ParameterizedTypeReference<List<PlaceDTO>>() {
+                }, lat, lng).getBody();
+    }
 }

@@ -61,18 +61,31 @@ public class PlacesService {
                                 toList()));
     }
 
+    public PlacesDTO getPlacesByLatAndLng(Double lat, Double lng) {
+        List<PlaceDTO> placesDTOS = this.externalPlacesService.getPlacesByLatAndLng(lat, lng);
+        return new PlacesDTO(Stream.concat(placesDTOS.stream().map(this::getPlaceDTO),
+                this.placesRepository.findAllByAndPositionNear(new Point(lat, lng), new Distance(1, Metrics.KILOMETERS)).stream()
+                        .filter(entity -> placesDTOS
+                                .stream()
+                                .noneMatch(dto -> dto.getName().equals(entity.getName()) && dto.getGeo().equals(new Geo(entity.getPosition()[0], entity.getPosition()[1]))))
+                        .map(entity -> this.placeConverter.fromEntity(entity)))
+                .collect(Collectors.toList()));
+    }
+
+    private PlaceDTO getPlaceDTO(PlaceDTO placeDto) {
+        Optional<PlaceEntity> placeEntityOptional = this.placesRepository.findFirstByNameAndPosition(placeDto.getName(), new Point(placeDto.getGeo().getLat(), placeDto.getGeo().getLng()));
+        PlaceDTO newPlaceDTO = placeEntityOptional.isPresent() ?
+                this.placeConverter.fromEntity(placeEntityOptional.get()) :
+                this.placeConverter.fromEntity(this.placesRepository.save(this.placeConverter.fromDTO(placeDto)));
+        newPlaceDTO.appendReviews(placeDto.getReviews());
+        newPlaceDTO.setPhotos(placeDto.getPhotos());
+        newPlaceDTO.setAddress(placeDto.getAddress());
+        return newPlaceDTO;
+    }
+
     public PlacesDTO getPlacesByLatLngAndName(Double lat, Double lng, String name) {
         List<PlaceDTO> placesDTOS = this.externalPlacesService.getPlacesByQueryParams(lat, lng, name);
-        return new PlacesDTO(Stream.concat(placesDTOS.stream().map(placeDto -> {
-                    Optional<PlaceEntity> placeEntityOptional = this.placesRepository.findFirstByNameAndPosition(placeDto.getName(), new Point(placeDto.getGeo().getLat(), placeDto.getGeo().getLng()));
-                    PlaceDTO newPlaceDTO = placeEntityOptional.isPresent() ?
-                            this.placeConverter.fromEntity(placeEntityOptional.get()) :
-                            this.placeConverter.fromEntity(this.placesRepository.save(this.placeConverter.fromDTO(placeDto)));
-                    newPlaceDTO.appendReviews(placeDto.getReviews());
-                    newPlaceDTO.setPhotos(placeDto.getPhotos());
-                    newPlaceDTO.setAddress(placeDto.getAddress());
-                    return newPlaceDTO;
-                }),
+        return new PlacesDTO(Stream.concat(placesDTOS.stream().map(this::getPlaceDTO),
                 this.placesRepository.findAllByAndPositionNear(new Point(lat, lng), new Distance(1, Metrics.KILOMETERS)).stream()
                         .filter(entity -> placesDTOS
                                 .stream()

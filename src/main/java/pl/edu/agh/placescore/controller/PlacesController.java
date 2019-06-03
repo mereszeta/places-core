@@ -31,11 +31,6 @@ public class PlacesController {
         return ResponseEntity.ok(this.placesService.getPlacesByName(name));
     }
 
-    @GetMapping(params = {"!name"})
-    public ResponseEntity<PlacesDTO> getPlacesByLatAndLng(@RequestParam Double lat, @RequestParam Double lng) {
-        return ResponseEntity.ok(this.placesService.getPlacesByLatAndLng(lat, lng));
-    }
-
     @GetMapping(params = {"!lat", "!lng", "!name"})
     public ResponseEntity<PlacesDTO> getPlaces() {
         return ResponseEntity.ok(this.placesService.getAllPlaces());

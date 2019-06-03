@@ -2,6 +2,7 @@ package pl.edu.agh.placescore.converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pl.edu.agh.placescore.model.common.Geo;
 import pl.edu.agh.placescore.model.dto.PlaceDTO;
 import pl.edu.agh.placescore.model.entity.PlaceEntity;
 
@@ -24,7 +25,7 @@ public class PlaceConverter implements BaseConverter<PlaceEntity, PlaceDTO> {
 
     @Override
     public PlaceDTO fromEntity(PlaceEntity entity) {
-        return new PlaceDTO(entity.getId(), entity.getName(), entity.getCategory(), entity.getGeo(), entity.getPhone(),
+        return new PlaceDTO(entity.getId(), entity.getName(), entity.getCategory(), new Geo(entity.getPosition()[0], entity.getPosition()[1]), entity.getPhone(),
                 entity.getDescription(),
                 entity.getReviews().stream().map(reviewEntity -> this.reviewConverter.fromEntity(reviewEntity))
                         .collect(toList()));
